@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     },
     paper:{
       position:"relative",
-      height:"80vh",
+      height:"600px",
       background:"#40e0d0",
       overflow:"hidden",
     },
@@ -25,25 +25,22 @@ const useStyles = makeStyles({
       transform:"translateX(-50%)",
       transitions:"4s ease-in"
     },
-    content:{
-      position:"relative",
-    },
     searchBar:{
       backgroundColor:"rgba(255,255,255,0.7)",
-      width:"75%",
-      height:"40px",
+      width:"80%",
+      height:"2.5rem",
       position:"relative",
-      top:15,
       left:"50%",
       transform:"translateX(-50%)",
-      borderRadius:50
+      borderRadius:50,
+      marginTop:"5%"
     },
     themeColor:{
-      color:"#00ced1"
+      color:"#00ced1",
     },
     sorry:{
       background:"rgba(240,240,240,0.4)",
-      padding:"0.8em 0.8em",
+      padding:"0.8rem 0.8rem",
       borderRadius:15,
       position:"absolute",
       top:"12rem",
@@ -51,57 +48,47 @@ const useStyles = makeStyles({
       left:"50%",
       transform: "translateX(-50%)",
       textShadow:"1px 1px 1px black",
+      boxShadow: "1px 1px 1px 1px 1px black",
     },
     sadFace:{
-      fontSize:"3em",
-      position:"relative",
-      top:"50%",
-      transform:"translateY(-30%)",
-      margin:-12,
-      marginRight:"0.1em"
+      fontSize:"3em"
     },
-    temp:{
+    textShadow:{
       color:"white",
       textShadow:"1px 1px 1px black"
     },
-    weather:{
-      color:"white",
-      textShadow:"1px 1px 10px black"
-    },
-    weathers:{
-      background:"rgba(245,245,245,0.3)",
+    main:{
+      background:"rgba(240,240,240,0.4)",
+      margin:"4rem 0rem",
+      padding:"2rem 0rem",
+      width:"75%",
       position:"relative",
-      top:"4rem",
       left:"50%",
       transform: "translateX(-50%)",
-      padding:"1em",
-      boxShadow: "1px 1px 5px",
       borderRadius:"10px",
-      width:"60%"
+    },
+    country:{
+      margin:"-1.8em 0em 1.2em 1.5em"
     },
     extraStats:{
-      color:"white",
-      background:"rgba(245,245,245,0.25)",
+      background:"rgba(240,240,240,0.1)",
       position:"relative",
-      top:"7rem",
-      textShadow:"1px 1px 5px black",
-      borderRadius:"10px",
-      height:"8rem",
       left:"50%",
-      transform: "translateX(-50%)"
+      transform: "translateX(-50%)",
+      width:"85%",
+      padding:"1em 0.7em",
+      borderRadius:"10px",
     },
-    loc:{
-      color:"white",
-      position:"relative",
-      top:"6rem",
-      left:"1rem",
-      textShadow:"1px 1px 5px black"
+    headers:{
+      color:"grey"
     },
     flex:{
       display:"flex",
       flexDirection:"column",
       fontSize:18,
-      margin:"0px 0.3rem"
+      margin:"0px 0.3rem",
+      flexWrap:"wrap",
+      justifyContent:"space-around"
     }
   });
 
@@ -135,7 +122,7 @@ const WeatherApp = () => {
               setTimeout(() => {
                 setWeather(result); 
                 setQuery('');
-              }, 2000);
+              }, 1500);
             });
         }
         
@@ -149,15 +136,15 @@ const WeatherApp = () => {
 
     return (
         <Grid container className={classes.root} justify="center" alignItems="center" xs={12}>
-          <Grid item xs={10} sm={3}>
+          <Grid item xs={11} sm={3}>
             <Paper className={classes.paper}>
               
               {/* BACKGROUND IMAGE */}
               <img className={classes.bgImage} src={bgi}/>
               
               {/* CONTENT */}
-              <div className={classes.content}>
-                <div className={classes.searchBar}>
+              <div>
+                <section className={classes.searchBar}>
                   <TextField
                     id="city"
                     onChange={e=> setQuery(e.target.value)} 
@@ -172,7 +159,7 @@ const WeatherApp = () => {
                       ),
                     }}
                   />
-                </div>
+                </section>
 
                   {weather.cod==="404" 
 
@@ -189,62 +176,63 @@ const WeatherApp = () => {
                           </Grid>
                         </Grid>
                       ): (
-                        weather.main!==undefined &&(<div>
+                        weather.main!==undefined &&(<div style={{ position:"relative"}}>
 
-                          <section className={classes.weathers}>
-                            <Grid className={classes.temp} container item xs={12}  justify="center" alignItems="center">
-                              <Typography className={classes.temp} variant="h2"> 
+                          <Paper className={`${classes.main} ${classes.textShadow}`}>
+                            <Grid container item xs={12}  justify="center" alignItems="center">
+                              <Typography variant="h2"> 
                                 {Math.round(weather.main.temp)}°C
                               </Typography>
-                              <Typography variant="subtitle1">
+                              <Typography  className={classes.themeColor}  variant="subtitle1">
                                 {Math.round(weather.main.temp*1.8+32)}°F
                               </Typography>
                             </Grid>
 
-                            <Grid className={classes.weather} container item xs={12}  justify="center" alignItems="center">
-                              <Typography variant="h6">
+                            <Grid container item xs={12}  justify="center" alignItems="center">
+                              <Typography variant="h5">
                                 {weather.weather[0].main} 
                               </Typography>
                             </Grid>
 
-                            <Grid className={classes.icon} container item xs={12}  justify="center" alignItems="center">
+                            <Grid container item xs={12}  justify="center" alignItems="center">
                               <img src={`http://openweathermap.org/img/w/${weather.weather[0].icon}.png`}/>
                             </Grid>
-                          </section>
+                          </Paper>
 
-                          <section className={classes.loc}>
-                            <Grid container xs={12} className>
+                          <section>
+                            <Grid container xs={12} className={`${classes.textShadow} ${classes.country} `}>
                             <Typography variant="h4">
                               {weather.name}, {weather.sys.country}
-                            </Typography>
-                              
+                            </Typography> 
                             </Grid>
                           </section>
 
-                          <section>
-                              <Grid container xs={11} justify="center" alignItems="center" className={classes.extraStats}>
-                                <Typography variant="p">
-                                  <div className={classes.flex} style={{flexDirection:"row"}}>
-                                    <div className={classes.flex} >
-                                      <strong>Max</strong>
-                                      <span>{weather.main.temp_max}°</span>
-                                    </div>
-                                    <div className={classes.flex}>
-                                      <strong>Min</strong>
-                                      <span>{weather.main.temp_max}°</span>
-                                    </div>
-                                    <div className={classes.flex}>
-                                      <strong>Wind</strong>
-                                      <span>{weather.wind.speed}mph</span>
-                                    </div>
-                                    <div className={classes.flex}>
-                                      <strong>Humidity</strong>
-                                      <span>{weather.main.humidity}%</span>
-                                    </div>
+                          
+                          <Grid container xs={11} justify="center" alignItems="center">
+                            <Paper  className={`${classes.textShadow} ${classes.extraStats}`}>
+                              <Typography variant="p">
+                                <div className={classes.flex} style={{flexDirection:"row"}}>
+                                  <div className={classes.flex} >
+                                    <span className={classes.themeColor}>Maximum</span>
+                                    <span>{weather.main.temp_max}°</span>
                                   </div>
-                                </Typography>
-                              </Grid>
-                          </section>
+                                  <div className={classes.flex}>
+                                    <span className={classes.themeColor}>Minimum</span>
+                                    <span>{weather.main.temp_max}°</span>
+                                  </div>
+                                  <div style={{display:"block", width:"100%",height:"1em",}}></div>
+                                  <div className={classes.flex}>
+                                    <span className={classes.themeColor}>Wind</span>
+                                    <span>{weather.wind.speed}mph</span>
+                                  </div>
+                                  <div className={classes.flex}>
+                                    <span className={classes.themeColor}>Humidity</span>
+                                    <span>{weather.main.humidity}%</span>
+                                  </div>
+                                </div>
+                              </Typography>
+                            </Paper>
+                          </Grid>
 
                             {/* {weather.name} {weather.sys.country} */}
                           
@@ -252,10 +240,7 @@ const WeatherApp = () => {
                         )
                       )
                   }
-
                 </div>
-
-                
             </Paper>
           </Grid>
         </Grid>
